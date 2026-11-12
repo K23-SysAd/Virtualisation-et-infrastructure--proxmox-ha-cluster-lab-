@@ -1,0 +1,21 @@
+﻿# Enregistrements de la zone helios.intern, lus par 01-installer-dns.ps1.
+# Les lignes qui commencent par # sont ignorées.
+#
+# Colonnes :
+#   Nom      : nom court (odoo) ou @ pour la racine de la zone
+#   Type     : A, CNAME ou MX
+#   Valeur   : IP (A), nom cible (CNAME, MX) : nom court ou FQDN
+#   PTR      : oui = crée l'enregistrement inverse (type A seulement)
+#   Priorite : priorité du MX
+#
+# Pour ajouter une application : ajouter une ligne puis relancer le script.
+Nom,Type,Valeur,PTR,Priorite
+infra,A,172.16.1.50,oui,
+ca,A,172.16.1.50,non,
+#
+# --- Exemples à décommenter et adapter (IP selon vos VM Proxmox) ---
+# odoo,A,172.16.1.60,oui,
+# erp,CNAME,odoo,,
+# mail,A,172.16.1.70,oui,
+# webmail,CNAME,mail,,
+# @,MX,mail,,10

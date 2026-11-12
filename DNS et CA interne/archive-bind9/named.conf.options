@@ -1,0 +1,57 @@
+// /etc/bind/named.conf.options — infra.helios.intern (192.168.100.11, alias ns1)
+
+// Réseaux autorisés à utiliser la récursion
+acl "helios-clients" {
+    127.0.0.0/8;
+    192.168.100.0/24;
+};
+
+options {
+    directory "/var/cache/bind";
+
+    // On n'écoute que sur le loopback et l'IP du serveur
+    // (évite tout conflit avec systemd-resolved sur 127.0.0.53).
+    listen-on port 53 { 127.0.0.1; 192.168.100.11; };
+    listen-on-v6 { none; };
+
+    // Récursion réservée au lab
+    recursion yes;
+    allow-recursion { "helios-clients"; };
+    allow-query     { "helios-clients"; };
+    allow-query-cache { "helios-clients"; };
+
+    // Pas de serveur secondaire pour l'instant
+    allow-transfer { none; };
+
+    // Résolution Internet via des résolveurs publics
+    forwarders {
+        1.1.1.1;
+        8.8.8.8;
+    };
+    forward only;
+
+    dnssec-validation auto;
+
+    // Ne pas divulguer la version de BIND
+    version "not disclosed";
+
+    // Bonnes pratiques
+    minimal-responses yes;
+};
+
+logging {
+    channel default_log {
+        file "/var/log/named/named.log" versions 5 size 20m;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+        severity info;
+    };
+    channel query_log {
+        file "/var/log/named/queries.log" versions 5 size 50m;
+        print-time yes;
+        severity info;
+    };
+    category default { default_log; };
+    category queries { query_log; };
+};

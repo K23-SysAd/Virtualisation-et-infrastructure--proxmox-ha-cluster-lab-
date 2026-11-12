@@ -1,0 +1,18 @@
+; Zone inverse 192.168.100.0/24
+; IMPORTANT : incrémenter le numéro de série à chaque modification (AAAAMMJJNN).
+$TTL 3600
+$ORIGIN 100.168.192.in-addr.arpa.
+
+@       IN  SOA ns1.helios.intern. hostmaster.helios.intern. (
+            2026111201  ; serial
+            3600        ; refresh
+            900         ; retry
+            1209600     ; expire (14 jours)
+            300 )       ; negative TTL
+
+@       IN  NS      ns1.helios.intern.
+
+10      IN  PTR     mail.helios.intern.
+11      IN  PTR     infra.helios.intern.
+20      IN  PTR     odoo.helios.intern.
+30      IN  PTR     client.helios.intern.
